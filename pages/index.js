@@ -9,7 +9,6 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <h1>Whatsapp Build 2.0</h1>
       <Sidebar />
     </div>
   );
