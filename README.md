@@ -1,3 +1,8 @@
+# Whatsapp 2.0
+
+> A 1-1 chat, with available live status chat application, a clone for whatsapp build.
+> powered by next js for server-side rendering, using styled components, hosted on vercel.
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
