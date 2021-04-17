@@ -1,23 +1,44 @@
 import { Avatar, IconButton } from "@material-ui/core";
+import InsertEmoticonIcon from "@material-ui/icons/InsertEmoticon";
 import AttachFileIcon from "@material-ui/icons/AttachFile";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import { useRouter } from "next/router";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { useCollection } from "react-firebase-hooks/firestore";
 import styled from "styled-components";
-import { auth } from "../firebase";
+import { auth, db } from "../firebase";
+import Message from "./Message";
 
 const ChatScreen = () => {
   const [user] = useAuthState(auth);
   const router = useRouter();
+  const [messageSnapshot] = useCollection(
+    db
+      .collection("chats")
+      .doc(router.query.id)
+      .collection("messages")
+      .orderBy("timestamp", "asc")
+  );
 
-  const shwMessage = () => {
-    
-  }
+  const showMessages = () => {
+    if (messageSnapshot) {
+      return messageSnapshot.docs.map((msg) => (
+        <Message
+          key={msg.id}
+          user={msg.data().user}
+          message={{
+            ...msg.data(),
+            timestamp: msg.data().timestamp?.toDate().getTime(),
+          }}
+        />
+      ));
+    }
+  };
+
   return (
     <Container>
       <Header>
         <Avatar />
-
         <HeaderInfo>
           <h3>Rec Email</h3>
           <p>last seen...</p>
@@ -33,9 +54,14 @@ const ChatScreen = () => {
       </Header>
 
       <MessageContainer>
-        {/* show messages */}
+        {showMessages()}
         <EndOfMessage />
       </MessageContainer>
+
+      <InputContainer>
+        <InsertEmoticonIcon />
+        <Input />
+      </InputContainer>
     </Container>
   );
 };
@@ -71,3 +97,10 @@ const HeaderInfo = styled.div`
 const HeaderIcons = styled.div``;
 
 const MessageContainer = styled.div``;
+
+// to enable auto scroll for the messages
+const EndOfMessage = styled.div``;
+
+const InputContainer = styled.form``;
+
+const Input = styled.div``;
