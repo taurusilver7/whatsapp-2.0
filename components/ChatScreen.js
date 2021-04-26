@@ -1,17 +1,21 @@
+import styled from "styled-components";
+import { useState } from "react";
+import { useRouter } from "next/router";
+import { useCollection } from "react-firebase-hooks/firestore";
+import { useAuthState } from "react-firebase-hooks/auth";
+
+import { auth, db } from "../firebase";
+import Message from "./Message";
+
 import { Avatar, IconButton } from "@material-ui/core";
 import InsertEmoticonIcon from "@material-ui/icons/InsertEmoticon";
 import AttachFileIcon from "@material-ui/icons/AttachFile";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import MicIcon from "@material-ui/icons/Mic";
-import { useRouter } from "next/router";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { useCollection } from "react-firebase-hooks/firestore";
-import styled from "styled-components";
-import { auth, db } from "../firebase";
-import Message from "./Message";
 
 const ChatScreen = () => {
   const [user] = useAuthState(auth);
+  const [input, setInput] = useState("");
   const router = useRouter();
   const [messageSnapshot] = useCollection(
     db
@@ -98,7 +102,11 @@ const HeaderInfo = styled.div`
 
 const HeaderIcons = styled.div``;
 
-const MessageContainer = styled.div``;
+const MessageContainer = styled.div`
+  padding: 30px;
+  background-color: #e5ded8;
+  min-height: 90vh;
+`;
 
 // to enable auto scroll for the messages
 const EndOfMessage = styled.div``;
