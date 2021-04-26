@@ -13,8 +13,10 @@ import InsertEmoticonIcon from "@material-ui/icons/InsertEmoticon";
 import AttachFileIcon from "@material-ui/icons/AttachFile";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import MicIcon from "@material-ui/icons/Mic";
+import getRecipientEmail from "../utils/getRecipientEmail";
 
 const ChatScreen = ({ chat, messages }) => {
+  console.log(chat, messages);
   const [user] = useAuthState(auth);
   const [input, setInput] = useState("");
   const router = useRouter();
@@ -61,14 +63,18 @@ const ChatScreen = ({ chat, messages }) => {
       user: user.email,
       photoURL: user.photoURL,
     });
+
+    setInput("");
   };
+
+  const recipientEmail = getRecipientEmail(chat.users, user);
 
   return (
     <Container>
       <Header>
         <Avatar />
         <HeaderInfo>
-          <h3>Rec Email</h3>
+          <h3>{recipientEmail}</h3>
           <p>last seen...</p>
         </HeaderInfo>
         <HeaderIcons>
