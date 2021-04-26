@@ -14,9 +14,11 @@ import AttachFileIcon from "@material-ui/icons/AttachFile";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import MicIcon from "@material-ui/icons/Mic";
 import getRecipientEmail from "../utils/getRecipientEmail";
+import Timeago from "timeago-react";
 
 const ChatScreen = ({ chat, messages }) => {
-  console.log(chat, messages);
+  console.log(chat);
+  console.log(messages);
   const [user] = useAuthState(auth);
   const [input, setInput] = useState("");
   const router = useRouter();
@@ -26,6 +28,11 @@ const ChatScreen = ({ chat, messages }) => {
       .doc(router.query.id)
       .collection("messages")
       .orderBy("timestamp", "asc")
+  );
+  const [recipientSnapshot] = useCollection(
+    db
+      .collection("users")
+      .where("email", "==", getRecipientEmail(chat.users, user))
   );
 
   const showMessages = () => {
@@ -66,16 +73,31 @@ const ChatScreen = ({ chat, messages }) => {
 
     setInput("");
   };
-
+  const recipient = recipientSnapshot?.docs?.[0]?.data();
   const recipientEmail = getRecipientEmail(chat.users, user);
 
   return (
     <Container>
       <Header>
-        <Avatar />
+        {recipient ? (
+          <Avatar src={recipient?.photoURL} />
+        ) : (
+          <Avatar src={recipientEmail[0]} />
+        )}
         <HeaderInfo>
           <h3>{recipientEmail}</h3>
-          <p>last seen...</p>
+          {recipientSnapshot ? (
+            <p>
+              last seen:{" "}
+              {recipient?.lastSeen?.toDate() ? (
+                <Timeago datetime={recipient?.lastSeen?.toDate()} />
+              ) : (
+                "Unavailable"
+              )}
+            </p>
+          ) : (
+            <p>loading last seen...</p>
+          )}
         </HeaderInfo>
         <HeaderIcons>
           <IconButton>
