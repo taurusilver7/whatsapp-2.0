@@ -2,6 +2,7 @@ import { Avatar, IconButton } from "@material-ui/core";
 import InsertEmoticonIcon from "@material-ui/icons/InsertEmoticon";
 import AttachFileIcon from "@material-ui/icons/AttachFile";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
+import MicIcon from "@material-ui/icons/Mic";
 import { useRouter } from "next/router";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useCollection } from "react-firebase-hooks/firestore";
@@ -61,6 +62,7 @@ const ChatScreen = () => {
       <InputContainer>
         <InsertEmoticonIcon />
         <Input />
+        <MicIcon />
       </InputContainer>
     </Container>
   );
@@ -101,6 +103,23 @@ const MessageContainer = styled.div``;
 // to enable auto scroll for the messages
 const EndOfMessage = styled.div``;
 
-const InputContainer = styled.form``;
+const InputContainer = styled.form`
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  position: sticky;
+  bottom: 0;
+  background-color: white;
+  z-index: 100;
+`;
 
-const Input = styled.div``;
+const Input = styled.input`
+  flex: 1;
+  outline: 0;
+  border: none;
+  border-radius: 10px;
+  padding: 20px;
+  background-color: whitesmoke;
+  margin-left: 15px;
+  margin-right: 15px;
+`;
