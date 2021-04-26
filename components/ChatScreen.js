@@ -5,6 +5,7 @@ import { useCollection } from "react-firebase-hooks/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
 
 import { auth, db } from "../firebase";
+import firebase from "firebase";
 import Message from "./Message";
 
 import { Avatar, IconButton } from "@material-ui/core";
@@ -40,6 +41,24 @@ const ChatScreen = () => {
     }
   };
 
+  const sendMessage = (e) => {
+    e.preventDefault();
+    // update the last seen on the chat screen.
+    db.collection("users").doc(user.uid).set(
+      {
+        lastSeen: firebase.firestore.FieldValue.serverTimestamp(),
+      },
+      { merge: true }
+    );
+    // add messages to database & display on chatscreen.
+    db.collection("chats").doc(router.query.id).collection("messages").add({
+      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+      message: input,
+      user: user.email,
+      photoURL: user.photoURL,
+    });
+  };
+
   return (
     <Container>
       <Header>
@@ -65,7 +84,10 @@ const ChatScreen = () => {
 
       <InputContainer>
         <InsertEmoticonIcon />
-        <Input />
+        <Input value={input} onChange={(e) => setInput(e.target.value)} />
+        <button disabled={!input} onClick={sendMessage} hidden>
+          Send
+        </button>
         <MicIcon />
       </InputContainer>
     </Container>
