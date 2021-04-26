@@ -1,6 +1,6 @@
+import styled from "styled-components";
 import { Avatar } from "@material-ui/core";
 import { useAuthState } from "react-firebase-hooks/auth";
-import styled from "styled-components";
 
 import getRecipientEmail from "../utils/getRecipientEmail";
 import { auth, db } from "../firebase";
