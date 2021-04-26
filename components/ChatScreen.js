@@ -14,7 +14,7 @@ import AttachFileIcon from "@material-ui/icons/AttachFile";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import MicIcon from "@material-ui/icons/Mic";
 
-const ChatScreen = () => {
+const ChatScreen = ({ chat, messages }) => {
   const [user] = useAuthState(auth);
   const [input, setInput] = useState("");
   const router = useRouter();
@@ -37,6 +37,10 @@ const ChatScreen = () => {
             timestamp: msg.data().timestamp?.toDate().getTime(),
           }}
         />
+      ));
+    } else {
+      return JSON.parse(messages).map((msg) => (
+        <Message key={msg.id} user={msg.user} message={msg} />
       ));
     }
   };
