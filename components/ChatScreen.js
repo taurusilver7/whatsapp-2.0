@@ -15,10 +15,12 @@ import MoreVertIcon from "@material-ui/icons/MoreVert";
 import MicIcon from "@material-ui/icons/Mic";
 import getRecipientEmail from "../utils/getRecipientEmail";
 import Timeago from "timeago-react";
+import { useRef } from "react";
 
 const ChatScreen = ({ chat, messages }) => {
-  console.log(chat);
-  console.log(messages);
+  // console.log(chat);
+  // console.log(messages);
+  const endOfMsgRef = useRef(null);
   const [user] = useAuthState(auth);
   const [input, setInput] = useState("");
   const router = useRouter();
@@ -34,6 +36,13 @@ const ChatScreen = ({ chat, messages }) => {
       .collection("users")
       .where("email", "==", getRecipientEmail(chat.users, user))
   );
+
+  const ScrollToBottom = () => {
+    endOfMsgRef.current.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  };
 
   const showMessages = () => {
     if (messageSnapshot) {
@@ -72,7 +81,9 @@ const ChatScreen = ({ chat, messages }) => {
     });
 
     setInput("");
+    ScrollToBottom();
   };
+
   const recipient = recipientSnapshot?.docs?.[0]?.data();
   const recipientEmail = getRecipientEmail(chat.users, user);
 
@@ -111,7 +122,7 @@ const ChatScreen = ({ chat, messages }) => {
 
       <MessageContainer>
         {showMessages()}
-        <EndOfMessage />
+        <EndOfMessage ref={endOfMsgRef} />
       </MessageContainer>
 
       <InputContainer>
@@ -163,7 +174,9 @@ const MessageContainer = styled.div`
 `;
 
 // to enable auto scroll for the messages
-const EndOfMessage = styled.div``;
+const EndOfMessage = styled.div`
+  margin-bottom: 50px;
+`;
 
 const InputContainer = styled.form`
   display: flex;
