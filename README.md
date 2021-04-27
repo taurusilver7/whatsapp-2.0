@@ -4,15 +4,28 @@
 > powered by next js for server-side rendering, using styled components, hosted on vercel.
 
 ## Dependencies
+
 - react-firebase-hooks
 - styled-components
 - better-react-spinkit
+- timeago-reactjs
+- moment
 
 ## Stock
 
 - [login image](https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/WhatsApp.svg/1200px-WhatsApp.svg.png)
 
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+
+## Components & page
+
+- Sidebar
+- Loading
+- ChatScreen
+- Chat
+- Message
+
+- index page + [id] chat page
 
 ## Getting Started
 
